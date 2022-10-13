@@ -8,6 +8,9 @@ public class FollowCamera : MonoBehaviour
     private GameObject player;
 
     public Vector3 offset;
+
+    public GameObject secCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,11 @@ public class FollowCamera : MonoBehaviour
             Vector3 target = transform.position + new Vector3 (deltaX, deltaY, 0f);
             Vector3 newpos = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5);	
             transform.position = newpos;
+        }
+        
+        if(Input.GetKeyDown(KeyCode.V)){
+            gameObject.SetActive(false);
+            secCamera.SetActive(true);
         }
 
 
