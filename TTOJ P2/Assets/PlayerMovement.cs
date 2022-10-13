@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     bool doubleJumpAv;
     float horizontalMove;
     float verticalMove;
-
+    Vector3 velocity = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space) && isGround == false && doubleJumpAv == true){
             DoubleJump();
         }
-
+        
         Movement();
 
 
@@ -73,10 +73,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void Movement(){
+        //if(isGround){
         float horizontalMove = Input.GetAxis("Horizontal");
-        float verticalMove = Input.GetAxis("Vertical");
-        Vector3 dir = new Vector3(horizontalMove, verticalMove, 0).normalized;
-        transform.Translate(dir * 4 * Time.deltaTime);
+        Vector3 target = new Vector3(horizontalMove * 3000 * Time.deltaTime, rb.velocity.y);
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, target ,  ref velocity, 0.3f);
+        //}
     }
 
 
