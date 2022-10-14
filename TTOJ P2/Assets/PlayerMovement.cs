@@ -11,11 +11,15 @@ public class PlayerMovement : MonoBehaviour
     float horizontalMove;
     float verticalMove;
     Vector3 velocity = Vector3.zero;
+    Animator anim;
+
+    bool lookingRight = true;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
 
@@ -59,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         if(isGround){
             rb.velocity = new Vector2(rb.velocity.x, 8f);
             doubleJumpAv = true;
-            Debug.Log("Jumped");
         }
     }
 
@@ -68,18 +71,36 @@ public class PlayerMovement : MonoBehaviour
          if(isGround == false){
             rb.velocity = new Vector2(rb.velocity.x, 6f);
             doubleJumpAv = false;
-            Debug.Log("Double Jumped");
         }
     }
 
     public void Movement(){
-        //if(isGround){
-        float horizontalMove = Input.GetAxis("Horizontal");
-        Vector3 target = new Vector3(horizontalMove * 3000 * Time.deltaTime, rb.velocity.y);
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, target ,  ref velocity, 0.3f);
-        //}
-    }
 
+        
+        float horizontalMove = Input.GetAxis("Horizontal");
+        anim.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        if(horizontalMove < 0 && lookingRight){
+            Flip();
+            lookingRight = false;
+        } else if (horizontalMove > 0 && lookingRight == false){
+            Flip();
+            lookingRight = true;
+        }
+
+        Vector3 target = new Vector3(horizontalMove * 6, rb.velocity.y);
+
+        rb.velocity = Vector3.MoveTowards(rb.velocity, target,  2);	
+       // rb.velocity = Vector3.SmoothDamp(rb.velocity, target ,  ref velocity, 0.1f);
+
+    }
+    
+
+    // Flip Character
+    void Flip(){
+        Vector3 charScale = transform.localScale;
+        charScale.x *= -1;
+        transform.localScale = charScale;
+    }
 
 
 }
