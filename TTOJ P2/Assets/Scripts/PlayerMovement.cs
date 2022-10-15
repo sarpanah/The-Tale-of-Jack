@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     float verticalMove;
     Vector3 velocity = Vector3.zero;
     Animator anim;
+    
 
     bool lookingRight = true;
 
@@ -38,22 +39,13 @@ public class PlayerMovement : MonoBehaviour
         Movement();
         
 
-        if (Input.GetMouseButtonDown(0)) {
-            Attack();
-        }
+        
+
+       
 
     }
 
-    public void Attack(){
-        int rand = Random.Range(1, 4);
-        if (rand == 1){
-            anim.SetTrigger ("Attack1");
-        } else if (rand == 2) {
-            anim.SetTrigger ("Attack2");
-        } else if (rand == 3) {
-            anim.SetTrigger ("Attack3");
-        }
-    }
+    
 
 
     void OnCollisionEnter2D(Collision2D collider){

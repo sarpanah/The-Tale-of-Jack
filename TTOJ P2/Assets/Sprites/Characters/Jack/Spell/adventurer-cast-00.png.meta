@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 384ce7d03750d9a4eb2860005c6b2a14
+guid: b311aa7958d8d2744a4c0c0355eeb8ef
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7896876554639040152
-    second: adventurer-idle-02_0
+      213: -5556814472923943663
+    second: adventurer-cast-00_0
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -106,22 +106,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: adventurer-idle-02_0
+      name: adventurer-cast-00_0
       rect:
         serializedVersion: 2
         x: 15
         y: 1
-        width: 19
-        height: 30
+        width: 21
+        height: 26
       alignment: 9
-      pivot: {x: 0.41827354, y: 0.47891247}
+      pivot: {x: 0.5027385, y: 0.5707826}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 86121adec98a86290800000000000000
-      internalID: -7896876554639040152
+      spriteID: 11d6e9a9daa32e2b0800000000000000
+      internalID: -5556814472923943663
       vertices: []
       indices: 
       edges: []
