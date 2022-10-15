@@ -8,6 +8,9 @@ public class PlayerCombat : MonoBehaviour
     float nextAttack = 0f;
     Animator anim;
 
+    public Transform castPoint;
+    public GameObject fire;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,16 +20,18 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Attack Code
         if (Input.GetMouseButtonDown(0)) {
             if(Time.time > nextAttack){
                 Attack();
                 nextAttack = Time.time + 1 / 2;
             }
         }
+
+        // Cast Code
         if (Input.GetKeyDown(KeyCode.F)) {
            // if(Time.time > nextAttack){
-                Spell();
+                anim.SetTrigger ("Spell");
                 nextAttack = Time.time + 1 / 2;
           //  }
         }
@@ -47,7 +52,7 @@ public class PlayerCombat : MonoBehaviour
     }
     
     public void Spell(){
-        anim.SetTrigger ("Spell");
+        Instantiate(fire, castPoint.position, Quaternion.identity);
     }
 
 }
