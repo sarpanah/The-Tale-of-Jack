@@ -11,15 +11,22 @@ public class PlayerCombat : MonoBehaviour
     public Transform castPoint;
     public GameObject fire;
 
+    Rigidbody2D rb;
+
+
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+     //   Debug.Log("s: " + startMovingTimer + 1);
+     //  Debug.Log("time: " + Time.time);
         // Attack Code
         if (Input.GetMouseButtonDown(0)) {
             if(Time.time > nextAttack){
@@ -30,10 +37,12 @@ public class PlayerCombat : MonoBehaviour
 
         // Cast Code
         if (Input.GetKeyDown(KeyCode.F)) {
-           // if(Time.time > nextAttack){
+           if(Time.time > nextAttack){
                 anim.SetTrigger ("Spell");
-                nextAttack = Time.time + 1 / 2;
-          //  }
+                PlayerMovement.moving = false;
+                rb.velocity = new Vector3 (0f, 0f, 0f);
+                nextAttack = Time.time + 3 / 2;
+            }
         }
 
         
@@ -53,6 +62,12 @@ public class PlayerCombat : MonoBehaviour
     
     public void Spell(){
         Instantiate(fire, castPoint.position, Quaternion.identity);
+        Invoke("UnlockMoving", 0.5f);
+
+    }
+
+    public void UnlockMoving(){
+        PlayerMovement.moving = true;
     }
 
 }

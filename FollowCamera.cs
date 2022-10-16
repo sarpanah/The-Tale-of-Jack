@@ -12,13 +12,10 @@ public class FollowCamera : MonoBehaviour
 
     public GameObject secCamera;
 
-    public static bool cam2OnAir = false;
-
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.Find("Player");
-        
     }
 
     // Update is called once per frame
@@ -27,11 +24,8 @@ public class FollowCamera : MonoBehaviour
         
         float deltaX = player.transform.position.x - transform.position.x;
         float deltaY = player.transform.position.y - transform.position.y;
-    
-        if (cam2OnAir){
-            transform.position = player.transform.position + new Vector3 (0f, 1.75f, -1f);
-            cam2OnAir = false;
-        }
+
+        Debug.Log(deltaY);
 
         if (Math.Abs(deltaX) > 3){
             Vector3 target = transform.position + new Vector3 (deltaX, 0f, 0f);
@@ -44,14 +38,10 @@ public class FollowCamera : MonoBehaviour
             Vector3 newpos = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5);	
             transform.position = newpos;
         }
-
-        
         
         if(Input.GetKeyDown(KeyCode.V)){
-
-            secCamera.SetActive(true);
             gameObject.SetActive(false);
-            
+            secCamera.SetActive(true);
         }
 
 
