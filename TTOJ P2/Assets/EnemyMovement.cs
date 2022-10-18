@@ -28,25 +28,31 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {       
 
+        Debug.Log(enemyIdleMode);
+
             if(enemyIdleMode){
             Movement();
            if(transform.position.x <= leftPoint.x){
             movingLeft = false;
+            if(transform.localScale.x < 0){
             Vector3 enemyScale = transform.localScale;
             enemyScale.x *= -1;
             transform.localScale = enemyScale;
+                }
            } else if (transform.position.x >= rightPoint.x){
             movingLeft = true;
             Vector3 enemyScale = transform.localScale;
+            if(transform.localScale.x > 0){
             enemyScale.x *= -1;
             transform.localScale = enemyScale;
-
+                }
            }
         } else if (enemyIdleMode == false){
             ChasePlayer();
+            Flip();
         }
 
-        if (transform.position.x - player.transform.position.x < 3){
+        if (transform.position.x - player.transform.position.x < 3 || player.transform.position.x - transform.position.x > 3){
             enemyIdleMode = false;
         } else {
             enemyIdleMode = true;
@@ -70,5 +76,17 @@ public class EnemyMovement : MonoBehaviour
          rb.MovePosition(newPos);
        // rb.velocity = Vector3.MoveTowards(rb.velocity, player.transform.position, 5 * Time.deltaTime);
     }    
+
+    void Flip(){
+        if(transform.position.x - player.transform.position.x < 0 && transform.localScale.x < 0){
+            Vector3 enemyScale = transform.localScale;
+            enemyScale.x *= -1;
+            transform.localScale = enemyScale;
+         } else if (transform.position.x - player.transform.position.x > 0 && transform.localScale.x > 0) {
+            Vector3 enemyScale = transform.localScale;
+            enemyScale.x *= -1;
+            transform.localScale = enemyScale;
+        }
+    }
 
 }
