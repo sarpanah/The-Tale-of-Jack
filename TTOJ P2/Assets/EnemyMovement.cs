@@ -34,15 +34,11 @@ public class EnemyMovement : MonoBehaviour
             Movement();
            if(transform.position.x <= leftPoint.x){
             movingLeft = false;
-            if(transform.localScale.x < 0){
-            Vector3 enemyScale = transform.localScale;
-            enemyScale.x *= -1;
-            transform.localScale = enemyScale;
-                }
+            
            } else if (transform.position.x >= rightPoint.x){
             movingLeft = true;
-            Vector3 enemyScale = transform.localScale;
             if(transform.localScale.x > 0){
+            Vector3 enemyScale = transform.localScale;
             enemyScale.x *= -1;
             transform.localScale = enemyScale;
                 }
@@ -52,7 +48,7 @@ public class EnemyMovement : MonoBehaviour
             Flip();
         }
 
-        if (transform.position.x - player.transform.position.x < 3 || player.transform.position.x - transform.position.x > 3){
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) < 3){
             enemyIdleMode = false;
         } else {
             enemyIdleMode = true;
@@ -64,11 +60,21 @@ public class EnemyMovement : MonoBehaviour
     void Movement(){
         if(movingLeft){
             transform.position = Vector3.MoveTowards(transform.position, leftPoint, moveSpeed * Time.deltaTime);
+            if(transform.localScale.x > 0){
+            Vector3 enemyScale = transform.localScale;
+            enemyScale.x *= -1;
+            transform.localScale = enemyScale;
+               }
         } else if(movingLeft == false){
             transform.position = Vector3.MoveTowards(transform.position, rightPoint, moveSpeed * Time.deltaTime);   
+            if(transform.localScale.x < 0){
+            Vector3 enemyScale = transform.localScale;
+            enemyScale.x *= -1;
+            transform.localScale = enemyScale;
         }   
     }
-
+    
+    }
 
     void ChasePlayer(){
          Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
