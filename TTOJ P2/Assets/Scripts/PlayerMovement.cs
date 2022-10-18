@@ -12,10 +12,11 @@ public class PlayerMovement : MonoBehaviour
     Animator anim;
     
    // public static Vector3 target;
-
-    public static bool moving = true;
     public static float horizontalMove = 0;
 
+    public static bool moving = true;
+    public static bool movingInSwing = false;
+   
     bool lookingRight = true;
 
 
@@ -41,14 +42,13 @@ public class PlayerMovement : MonoBehaviour
         }
         
         if(moving){
-        Movement();
+            Movement();
         }
         
-        //Debug.Log(target);
 
-        
-
-       
+        if(movingInSwing){
+            SwingMovement();
+        }
 
     }
 
@@ -106,6 +106,18 @@ public class PlayerMovement : MonoBehaviour
 
     }
     
+
+    public void SwingMovement(){
+        rb.velocity = new Vector3(0f, 0f, 0f);
+        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        anim.SetBool("Grab", true);
+        float turn = Input.GetAxis("Horizontal");
+        Vector3 d = new Vector3(0f, 0f, 1f);
+        Vector3 s = transform.position;
+        transform.RotateAround(s, d * turn, 60 * Time.deltaTime);
+    }
+
+
     
     // Flip Character
     void Flip(){
@@ -115,4 +127,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+
+
 }
+

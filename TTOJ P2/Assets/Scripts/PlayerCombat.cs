@@ -10,7 +10,7 @@ public class PlayerCombat : MonoBehaviour
 
     public Transform castPoint;
     public GameObject fire;
-
+    float stopCounter;
     Rigidbody2D rb;
 
 
@@ -25,9 +25,6 @@ public class PlayerCombat : MonoBehaviour
     void Update()
     {
 
-     //   Debug.Log("s: " + startMovingTimer + 1);
-     //  Debug.Log("time: " + Time.time);
-        // Attack Code
         if (Input.GetMouseButtonDown(0)) {
             if(Time.time > nextAttack){
                 Attack();
@@ -42,6 +39,7 @@ public class PlayerCombat : MonoBehaviour
                 PlayerMovement.moving = false;
                 rb.velocity = new Vector3 (0f, 0f, 0f);
                 nextAttack = Time.time + 3 / 2;
+                stopCounter = Time.time;
             }
         }
 
@@ -68,6 +66,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void UnlockMoving(){
         PlayerMovement.moving = true;
+
     }
 
 }
