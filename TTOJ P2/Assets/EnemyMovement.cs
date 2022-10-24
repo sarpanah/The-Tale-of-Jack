@@ -54,6 +54,10 @@ public class EnemyMovement : MonoBehaviour
             enemyIdleMode = true;
         }
 
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) < 1){
+            Debug.Log("FUCK LIFE");
+        } 
+
 
     }
 
