@@ -8,11 +8,19 @@ public class EnemyMovement : MonoBehaviour
     Vector3 rightPoint;
     bool movingLeft = true;
     bool enemyIdleMode = true;
+    bool reachedPlayer = false;
     Rigidbody2D rb;
     GameObject player;
-    
+    Animator anim;
+
     public float moveSpeed = 2f;
     public float chaseSpeed = 2f;
+
+    public float chaseDistX = 4f;
+    public float chaseDistY = 3f;
+    public float attackDist = 1.5f;
+
+
 
 
     // Start is called before the first frame update
@@ -22,59 +30,71 @@ public class EnemyMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         leftPoint = transform.position + new Vector3(-6f,0f,0f);
         rightPoint = transform.position + new Vector3(6f,0f,0f);
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {       
 
-        Debug.Log(enemyIdleMode);
-
-            if(enemyIdleMode){
+        if(enemyIdleMode){
             Movement();
-           if(transform.position.x <= leftPoint.x){
-            movingLeft = false;
+            if(transform.position.x <= leftPoint.x){
+                movingLeft = false;
             
-           } else if (transform.position.x >= rightPoint.x){
-            movingLeft = true;
-            if(transform.localScale.x > 0){
-            Vector3 enemyScale = transform.localScale;
-            enemyScale.x *= -1;
-            transform.localScale = enemyScale;
+            } else if (transform.position.x >= rightPoint.x){
+                movingLeft = true;
+                if(transform.localScale.x > 0){
+                    Vector3 enemyScale = transform.localScale;
+                    enemyScale.x *= -1;
+                    transform.localScale = enemyScale;
                 }
            }
         } else if (enemyIdleMode == false){
-            ChasePlayer();
-            Flip();
+            if (Mathf.Abs(transform.position.x - player.transform.position.x) < attackDist){
+                reachedPlayer = true;
+                stopAndAttack();
+
+            }else {
+                ChasePlayer();
+                Flip();
+            }
         }
 
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) < 3){
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) < chaseDistX && Mathf.Abs(transform.position.y - player.transform.position.y) < chaseDistY){
             enemyIdleMode = false;
-        } else {
+        } else{
             enemyIdleMode = true;
         }
+        
 
-        if (Mathf.Abs(transform.position.x - player.transform.position.x) < 1){
-            Debug.Log("FUCK LIFE");
-        } 
+        
 
 
     }
 
+
+    void stopAndAttack(){
+        anim.SetBool("Attack", true);
+        anim.SetBool("Running", false);
+    }
+
     void Movement(){
+        anim.SetBool("Running", true);
+        anim.SetBool("Attack", false);
         if(movingLeft){
             transform.position = Vector3.MoveTowards(transform.position, leftPoint, moveSpeed * Time.deltaTime);
             if(transform.localScale.x > 0){
-            Vector3 enemyScale = transform.localScale;
-            enemyScale.x *= -1;
-            transform.localScale = enemyScale;
-               }
+                Vector3 enemyScale = transform.localScale;
+                enemyScale.x *= -1;
+                transform.localScale = enemyScale;
+            }
         } else if(movingLeft == false){
             transform.position = Vector3.MoveTowards(transform.position, rightPoint, moveSpeed * Time.deltaTime);   
             if(transform.localScale.x < 0){
-            Vector3 enemyScale = transform.localScale;
-            enemyScale.x *= -1;
-            transform.localScale = enemyScale;
+                Vector3 enemyScale = transform.localScale;
+                enemyScale.x *= -1;
+                transform.localScale = enemyScale;
         }   
     }
     
@@ -84,6 +104,8 @@ public class EnemyMovement : MonoBehaviour
          Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
          Vector2 newPos = Vector2.MoveTowards(rb.position, target, chaseSpeed * Time.fixedDeltaTime);
          rb.MovePosition(newPos);
+         anim.SetBool("Running", true);
+         anim.SetBool("Attack", false);
        // rb.velocity = Vector3.MoveTowards(rb.velocity, player.transform.position, 5 * Time.deltaTime);
     }    
 

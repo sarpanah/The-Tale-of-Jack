@@ -21,11 +21,11 @@ public class PlatfromSwing : MonoBehaviour
     }
 
 
-    void OnCollisionEnter2D(Collision2D collider){
-        if(collider.gameObject.name == "Player"){
+    void OnTriggerEnter2D(Collider2D collider){
+        if(collider.gameObject.name == "Player" && PlayerMovement.movingInSwing == false){
             PlayerMovement.moving = false;
             PlayerMovement.movingInSwing = true;
-            player.transform.position = transform.position - new Vector3(.2f, 0.7f, 5f);
+            player.transform.position = transform.position;
         }
 
     }

@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     bool doubleJumpAv;
     Vector3 velocity = Vector3.zero;
     Animator anim;
+
+    public GameObject mile;
     
    // public static Vector3 target;
     public static float horizontalMove = 0;
@@ -113,8 +115,9 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("Grab", true);
         float turn = Input.GetAxis("Horizontal");
         Vector3 d = new Vector3(0f, 0f, 1f);
-        Vector3 s = transform.position;
-        transform.RotateAround(s, d * turn, 60 * Time.deltaTime);
+        Vector3 playerPosition = transform.position;
+        transform.RotateAround(playerPosition, d * turn, 60 * Time.deltaTime);
+
     }
 
 
@@ -125,6 +128,9 @@ public class PlayerMovement : MonoBehaviour
         charScale.x *= -1;
         transform.localScale = charScale;
     }
+
+
+
 
 
 
