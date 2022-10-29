@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
-{
-    Vector3 leftPoint;
-    Vector3 rightPoint;
-    bool movingLeft = true;
-    bool enemyIdleMode = true;
-    bool reachedPlayer = false;
+{   
+
+
     Rigidbody2D rb;
     GameObject player;
     Animator anim;
-
+    Vector3 leftPoint;
+    Vector3 rightPoint;
+    
+    bool movingLeft = true;
+    bool enemyIdleMode = true;
+    bool reachedPlayer = false;
+    
     public float moveSpeed = 2f;
     public float chaseSpeed = 2f;
-
     public float chaseDistX = 4f;
     public float chaseDistY = 3f;
     public float attackDist = 1.5f;
@@ -36,52 +38,39 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
+        EnemeyState();
 
-        if(enemyIdleMode){
-            Movement();
-            if(transform.position.x <= leftPoint.x){
-                movingLeft = false;
-            
-            } else if (transform.position.x >= rightPoint.x){
-                movingLeft = true;
-                if(transform.localScale.x > 0){
-                    Vector3 enemyScale = transform.localScale;
-                    enemyScale.x *= -1;
-                    transform.localScale = enemyScale;
-                }
-           }
-        } else if (enemyIdleMode == false){
-            if (Mathf.Abs(transform.position.x - player.transform.position.x) < attackDist){
-                reachedPlayer = true;
-                stopAndAttack();
+    }
 
-            }else {
-                ChasePlayer();
-                Flip();
-            }
-        }
+
+    // Check & decide what enemy should do
+    void EnemeyState(){
 
         if (Mathf.Abs(transform.position.x - player.transform.position.x) < chaseDistX && Mathf.Abs(transform.position.y - player.transform.position.y) < chaseDistY){
             enemyIdleMode = false;
-        } else{
+        } else {
             enemyIdleMode = true;
         }
-        
 
-        
-
+        if(enemyIdleMode){
+            Movement();
+            
+        } else if (enemyIdleMode == false){
+            EnemyDistanceChecker();
+        }
 
     }
 
-
-    void stopAndAttack(){
-        anim.SetBool("Attack", true);
-        anim.SetBool("Running", false);
-    }
-
+    // Check enemy have to move Left or Right
     void Movement(){
         anim.SetBool("Running", true);
         anim.SetBool("Attack", false);
+        if (transform.position.x <= leftPoint.x){
+                movingLeft = false;
+        } else if (transform.position.x >= rightPoint.x){
+                movingLeft = true;
+        }
+
         if(movingLeft){
             transform.position = Vector3.MoveTowards(transform.position, leftPoint, moveSpeed * Time.deltaTime);
             if(transform.localScale.x > 0){
@@ -96,8 +85,20 @@ public class EnemyMovement : MonoBehaviour
                 enemyScale.x *= -1;
                 transform.localScale = enemyScale;
         }   
-    }
+        }
     
+    }
+
+    // What enemy should do when idle mode is false
+    void EnemyDistanceChecker(){
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) < attackDist){
+                reachedPlayer = true;
+                stopAndAttack();
+
+            } else {
+                ChasePlayer();
+                Flip();
+            }
     }
 
     void ChasePlayer(){
@@ -108,6 +109,12 @@ public class EnemyMovement : MonoBehaviour
          anim.SetBool("Attack", false);
        // rb.velocity = Vector3.MoveTowards(rb.velocity, player.transform.position, 5 * Time.deltaTime);
     }    
+
+   void stopAndAttack(){
+        anim.SetBool("Attack", true);
+        anim.SetBool("Running", false);
+    }
+
 
     void Flip(){
         if(transform.position.x - player.transform.position.x < 0 && transform.localScale.x < 0){

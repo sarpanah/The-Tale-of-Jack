@@ -6,7 +6,7 @@ public class EnemyCombat : MonoBehaviour
 {
     GameObject player;
 
-    float x = 100;
+    public float damage = 20;
     void Start()
     {
         player = GameObject.Find("Player");
@@ -21,8 +21,7 @@ public class EnemyCombat : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider){
         if(collider.gameObject.name == "Player"){
-            x -= 1f;
-            Debug.Log(x);
+            player.GetComponent<PlayerHealth>().DecreaseHealth(damage);
         }
     }
 
