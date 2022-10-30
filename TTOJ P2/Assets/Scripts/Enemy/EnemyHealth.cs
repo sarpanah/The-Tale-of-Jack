@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
+
     float health = 100;
 
     Animator anim;
@@ -15,13 +16,13 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-       
+
     }
 
 
     public void DecreaseHealth(float damage){
-        health -= damage;
 
+        health -= damage;
         anim.SetTrigger("Hurt");
 
         if(health <= 0){
@@ -33,4 +34,5 @@ public class PlayerHealth : MonoBehaviour
     void Die(){
         Destroy(gameObject);
     }
+
 }

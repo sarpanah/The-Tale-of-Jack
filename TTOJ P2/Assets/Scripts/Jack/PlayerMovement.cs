@@ -6,16 +6,14 @@ public class PlayerMovement : MonoBehaviour
 {
 
     Rigidbody2D rb;
-    bool isGround;
-    bool doubleJumpAv;
     Vector3 velocity = Vector3.zero;
     Animator anim;
 
-    public GameObject mile;
-    
-   // public static Vector3 target;
-    public static float horizontalMove = 0;
+    bool isGround;
+    bool doubleJumpAv;
 
+    public GameObject mile;
+    public static float horizontalMove = 0;
     public static bool moving = true;
     public static bool movingInSwing = false;
    

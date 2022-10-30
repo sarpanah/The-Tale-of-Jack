@@ -15,7 +15,8 @@ public class EnemyMovement : MonoBehaviour
     bool movingLeft = true;
     bool enemyIdleMode = true;
     bool reachedPlayer = false;
-    
+    public static bool attackPlayer = false;
+
     public float moveSpeed = 2f;
     public float chaseSpeed = 2f;
     public float chaseDistX = 4f;
@@ -113,6 +114,7 @@ public class EnemyMovement : MonoBehaviour
    void stopAndAttack(){
         anim.SetBool("Attack", true);
         anim.SetBool("Running", false);
+        attackPlayer = true;
     }
 
 

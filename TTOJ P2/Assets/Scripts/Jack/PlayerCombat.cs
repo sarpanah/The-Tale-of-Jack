@@ -7,16 +7,18 @@ public class PlayerCombat : MonoBehaviour
 
     float nextAttack = 0f;
     Animator anim;
-
+    EnemyHealth enemy;
     public Transform castPoint;
     public GameObject fire;
     float stopCounter;
     Rigidbody2D rb;
-
+    public static bool attackEnemy = false;
+    public float damage = 20;
 
     // Start is called before the first frame update
     void Start()
     {
+        enemy = GetComponent<EnemyHealth>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -27,38 +29,44 @@ public class PlayerCombat : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0)) {
             if(Time.time > nextAttack){
-                Attack();
+                RunSwordAttack();
                 nextAttack = Time.time + 1 / 2;
             }
         }
 
-        // Cast Code
+
         if (Input.GetKeyDown(KeyCode.F)) {
-           if(Time.time > nextAttack){
-                anim.SetTrigger ("Spell");
-                PlayerMovement.moving = false;
-                rb.velocity = new Vector3 (0f, 0f, 0f);
-                nextAttack = Time.time + 3 / 2;
-                stopCounter = Time.time;
-            }
+           RunCastAttack();
         }
 
         
    
     }
 
-    public void Attack(){
-        int rand = Random.Range(1, 4);
-        if (rand == 1){
+    public void RunSwordAttack(){
+       int rand = Random.Range(1, 4);
+       if (rand == 1){
             anim.SetTrigger ("Attack1");
         } else if (rand == 2) {
             anim.SetTrigger ("Attack2");
         } else if (rand == 3) {
             anim.SetTrigger ("Attack3");
         }
+        attackEnemy = true;
     }
     
-    public void Spell(){
+
+    void RunCastAttack(){
+        if(Time.time > nextAttack){
+                anim.SetTrigger ("Cast");
+                PlayerMovement.moving = false;
+                rb.velocity = new Vector3 (0f, 0f, 0f);
+                nextAttack = Time.time + 3 / 2;
+                stopCounter = Time.time;
+        }
+    }
+
+    public void Cast(){
         Instantiate(fire, castPoint.position, Quaternion.identity);
         Invoke("UnlockMoving", 0.5f);
 
