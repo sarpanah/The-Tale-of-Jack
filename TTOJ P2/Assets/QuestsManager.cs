@@ -6,8 +6,8 @@ public class QuestsManager : MonoBehaviour
 {
 
     public static List<string> AllQuests = new List<string>();
-    public static List<string> LockedQuests = new List<string>();
     public static List<string> UnlockedQuests = new List<string>();
+    public static List<string> FinishedQuests = new List<string>();
     public static List<string> FailedQuests = new List<string>();
 
     string currentQuest;
@@ -23,7 +23,7 @@ public class QuestsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         CurrentQuest();
+        CurrentQuest();
     }
 
     void CurrentQuest(){
@@ -32,7 +32,7 @@ public class QuestsManager : MonoBehaviour
         } else {
             currentQuest = UnlockedQuests[0];
         }
+        Debug.Log(CurrentQuest);
     }
-
 
 }

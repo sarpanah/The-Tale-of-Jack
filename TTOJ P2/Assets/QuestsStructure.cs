@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestTest : MonoBehaviour
+public class QuestsStructure : MonoBehaviour
 {
 
     string questName = "Save the bird";
@@ -13,7 +13,6 @@ public class QuestTest : MonoBehaviour
     bool isQuestFailed = false;
 
     GameObject player;
-    GameObject capsule;
 
     public float startDis = 3f;
 
@@ -21,17 +20,15 @@ public class QuestTest : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
-        capsule = GameObject.Find("Capsule");
     }
 
     // Update is called once per frame
     void Update()
     {
-        QuestEvents();
 
-        if (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted && isQuestFinished == false)
+        if (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted)
             if(isQuestStarted){
-            MiddleDialogue();
+            OngoingDialogue();
             
         }
 
@@ -41,34 +38,25 @@ public class QuestTest : MonoBehaviour
             QuestsManager.UnlockedQuests.Add(questName);
         }
         
-        if  (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestFinished){
-            EndDialogue();
+        if(Input.GetKeyDown(KeyCode.R)){
+            isQuestFailed = true;
+            FailedQuest();
         }
         
     }
 
     void InitialDialogue(){
-        Debug.Log("Hey, Could you touch the capsule, please?");
+        Debug.Log("Initial Dialogue");
     }
 
-    void MiddleDialogue(){
-        Debug.Log("Just touch the capsule");
+    void OngoingDialogue(){
+        Debug.Log("Quest is ongoing");
     }
 
-    void EndDialogue(){
-        Debug.Log("Quest Finished SUCKSEXFULLY, Now you will die!");
+    void FinishedDialogue(){
+
     }
 
-
-    // Quest Events
-
-    void QuestEvents(){
-        if (Mathf.Abs(capsule.transform.position.x - player.transform.position.x) < 1f){
-            isQuestFinished = true;
-            QuestsManager.UnlockedQuests.Remove(questName);
-            QuestsManager.FinishedQuests.Add(questName);
-        }
-    }
 
     void FailedQuest(){
         if(isQuestFailed){
