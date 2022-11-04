@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class QuestTest : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class QuestTest : MonoBehaviour
     GameObject capsule;
 
     public float startDis = 3f;
+
+    public Animator anim;
+    public Text dialogueText;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +49,7 @@ public class QuestTest : MonoBehaviour
             EndDialogue();
         }
         
+        NpcDialogueBar();
     }
 
     void InitialDialogue(){
@@ -52,7 +57,7 @@ public class QuestTest : MonoBehaviour
     }
 
     void MiddleDialogue(){
-        Debug.Log("Just touch the capsule");
+        dialogueText.text = "Press E to asdasdTalk";
     }
 
     void EndDialogue(){
@@ -63,7 +68,7 @@ public class QuestTest : MonoBehaviour
     // Quest Events
 
     void QuestEvents(){
-        if (Mathf.Abs(capsule.transform.position.x - player.transform.position.x) < 1f){
+        if (Mathf.Abs(capsule.transform.position.x - player.transform.position.x) < 1f && isQuestStarted){
             isQuestFinished = true;
             QuestsManager.UnlockedQuests.Remove(questName);
             QuestsManager.FinishedQuests.Add(questName);
@@ -74,6 +79,22 @@ public class QuestTest : MonoBehaviour
         if(isQuestFailed){
             QuestsManager.FailedQuests.Add(questName);
             QuestsManager.UnlockedQuests.Remove(questName);
+        }
+    }
+
+
+    void NpcDialogueBar(){
+        if (Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted == false ) {
+            dialogueText.text = "Press E to Talk";
+            anim.SetBool("Active", true);
+        } else if (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted && isQuestFinished == false) {
+            dialogueText.text = "Please do it for me";
+            anim.SetBool("Active", true);
+        } else if (Input.GetKeyDown(KeyCode.E) && (Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted && isQuestFinished == true)){
+            dialogueText.text = "Thanks honey!";
+            anim.SetBool("Active", true);
+        } else {
+            anim.SetBool("Active", false);
         }
     }
 

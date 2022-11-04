@@ -32,7 +32,7 @@ public class QuestsManager : MonoBehaviour
         } else {
             currentQuest = UnlockedQuests[0];
         }
-        Debug.Log(CurrentQuest);
+        Debug.Log(currentQuest);
     }
 
 }
