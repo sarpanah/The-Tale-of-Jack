@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class QuestTest : MonoBehaviour
 {
 
-    string questName = "Save the bird";
+    string questName = "Quest Name: Save the bird";
+    string whatToDoInFirst = "Go and touch the capsule";
+    string whatToDoInFinal = "Go back to the npc";
 
     bool isQuestStarted = false;
     bool isQuestDone = false;
@@ -26,6 +28,7 @@ public class QuestTest : MonoBehaviour
     {
         player = GameObject.Find("Player");
         capsule = GameObject.Find("Capsule");
+        
     }
 
     // Update is called once per frame
@@ -43,6 +46,7 @@ public class QuestTest : MonoBehaviour
             isQuestStarted = true;
             InitialDialogue();
             QuestsManager.UnlockedQuests.Add(questName);
+            QuestsManager.whatToDoQuestString = whatToDoInFirst;
         }
         
         if  (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestFinished){
@@ -69,9 +73,11 @@ public class QuestTest : MonoBehaviour
 
     void QuestEvents(){
         if (Mathf.Abs(capsule.transform.position.x - player.transform.position.x) < 1f && isQuestStarted){
+            QuestsManager.whatToDoQuestString = "whatToDoInFinal";
             isQuestFinished = true;
             QuestsManager.UnlockedQuests.Remove(questName);
             QuestsManager.FinishedQuests.Add(questName);
+            
         }
     }
 
