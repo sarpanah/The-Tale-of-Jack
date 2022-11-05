@@ -54,10 +54,18 @@ public class QuestTest : MonoBehaviour
         }
         
         NpcDialogueBar();
+
+
+        if  (Input.GetKeyDown(KeyCode.Y)){
+            FindObjectOfType<DialogueManager>().DisplayDialogue();
+        }
+        
+
     }
 
     void InitialDialogue(){
-        Debug.Log("Hey, Could you touch the capsule, please?");
+        string[] dialogue = {"Could you touch the capsule for me?", "Please do it for me!"};
+        FindObjectOfType<DialogueManager>().InitializeDialogue(dialogue);
     }
 
     void MiddleDialogue(){
