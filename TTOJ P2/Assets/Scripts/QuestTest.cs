@@ -21,7 +21,7 @@ public class QuestTest : MonoBehaviour
     public float startDis = 3f;
 
     public Animator anim;
-    public Text dialogueText;
+    public Text dialogueBarText;
 
     // Start is called before the first frame update
     void Start()
@@ -69,11 +69,11 @@ public class QuestTest : MonoBehaviour
     }
 
     void MiddleDialogue(){
-        dialogueText.text = "Press E to asdasdTalk";
+        
     }
 
     void EndDialogue(){
-        Debug.Log("Quest Finished SUCKSEXFULLY, Now you will die!");
+        
     }
 
 
@@ -82,9 +82,7 @@ public class QuestTest : MonoBehaviour
     void QuestEvents(){
         if (Mathf.Abs(capsule.transform.position.x - player.transform.position.x) < 1f && isQuestStarted){
             QuestsManager.whatToDoQuestString = "whatToDoInFinal";
-            isQuestFinished = true;
-            QuestsManager.UnlockedQuests.Remove(questName);
-            QuestsManager.FinishedQuests.Add(questName);
+            QuestFinished();
             
         }
     }
@@ -97,15 +95,24 @@ public class QuestTest : MonoBehaviour
     }
 
 
+    void QuestFinished(){
+        isQuestFinished = true;
+        QuestsManager.UnlockedQuests.Remove(questName);
+        QuestsManager.FinishedQuests.Add(questName);
+    }
+
+
+
+
     void NpcDialogueBar(){
         if (Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted == false ) {
-            dialogueText.text = "Press E to Talk";
+            dialogueBarText.text = "Press E to Talk";
             anim.SetBool("Active", true);
         } else if (Input.GetKeyDown(KeyCode.E) && Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted && isQuestFinished == false) {
-            dialogueText.text = "Please do it for me";
+            dialogueBarText.text = "Please do it for me";
             anim.SetBool("Active", true);
         } else if (Input.GetKeyDown(KeyCode.E) && (Mathf.Abs(transform.position.x - player.transform.position.x) < startDis && isQuestStarted && isQuestFinished == true)){
-            dialogueText.text = "Thanks honey!";
+            dialogueBarText.text = "Thanks honey!";
             anim.SetBool("Active", true);
         } else {
             anim.SetBool("Active", false);

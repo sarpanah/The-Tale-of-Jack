@@ -16,10 +16,12 @@ public class PlayerMovement : MonoBehaviour
     public static float horizontalMove = 0;
     public static bool moving = true;
     public static bool movingInSwing = false;
-   
+    public Transform wallCheckLeft;
+    public LayerMask ground;
+
     bool lookingRight = true;
 
-
+    bool allowToMove = false;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +52,16 @@ public class PlayerMovement : MonoBehaviour
             SwingMovement();
         }
 
+        // Wall Code
+        if (Physics2D.OverlapCircle(wallCheckLeft.position, 0.5f, ground))
+			{
+                if(Input.GetAxis("Horizontal")<0){
+                    allowToMove = false;
+                } if (Input.GetAxis("Horizontal")>0){
+                    allowToMove = true;
+                }
+			} 
+
     }
 
     
@@ -59,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         
         if(collider.gameObject.tag == "Ground"){
             isGround = true;
+            allowToMove = true;
         }
     }
 
@@ -89,21 +102,25 @@ public class PlayerMovement : MonoBehaviour
 
     public void Movement(){
 
-        horizontalMove = Input.GetAxis("Horizontal");
-        anim.SetFloat("Speed", Mathf.Abs(horizontalMove));
-        if(horizontalMove < 0 && lookingRight){
-            Flip();
-            lookingRight = false;
-        } else if (horizontalMove > 0 && lookingRight == false){
-            Flip();
-            lookingRight = true;
-        }
+        if(allowToMove){
+            horizontalMove = Input.GetAxis("Horizontal");
+            anim.SetFloat("Speed", Mathf.Abs(horizontalMove));
+                if(horizontalMove < 0 && lookingRight){
+                    Flip();
+                    lookingRight = false;
+                } else if (horizontalMove > 0 && lookingRight == false){
+                    Flip();
+                    lookingRight = true;
+                }
 
         Vector3 target = new Vector3(horizontalMove * 6, rb.velocity.y);
 
         rb.velocity = Vector3.MoveTowards(rb.velocity, target,  2);
        // rb.velocity = Vector3.SmoothDamp(rb.velocity, target ,  ref velocity, 0.1f);
 
+        }
+
+        
     }
     
 

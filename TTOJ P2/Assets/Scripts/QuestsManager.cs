@@ -17,7 +17,7 @@ public class QuestsManager : MonoBehaviour
 
     string currentQuest;
 
-    string[] AllQuestsString = {"Save the bird", "Quest 2", "Quest 3"};
+    string[] AllQuestsString = {"Save the bird", "Mysterious Man", "Quest 3"};
 
     // Start is called before the first frame update
     void Start()
