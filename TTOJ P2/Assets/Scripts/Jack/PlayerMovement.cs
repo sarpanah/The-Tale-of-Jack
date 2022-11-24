@@ -56,16 +56,13 @@ public class PlayerMovement : MonoBehaviour
         // Wall Code
         if (Physics2D.OverlapCircle(wallCheck.position, 0.5f, ground)){
             if(transform.localScale.x > 0){
-                Debug.Log("Be samte divaram");
                 if(Input.GetAxis("Horizontal") > 0){
-                    Debug.Log("Vali Nemizaram");
                     allowToMove = false;
                 } else {
                     allowToMove = true;
                 }
             } else if (transform.localScale.x < 0){
                 if(Input.GetAxis("Horizontal") < 0){
-                    Debug.Log("Nemizaram");
                     allowToMove = false;
                 } else {
                     allowToMove = true;
