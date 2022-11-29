@@ -14,6 +14,8 @@ public class FollowCamera : MonoBehaviour
 
     public static bool cam2OnAir = false;
 
+    public float smoothness = 0.3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,22 +31,23 @@ public class FollowCamera : MonoBehaviour
         float deltaY = player.transform.position.y - transform.position.y;
     
         if (cam2OnAir){
-            transform.position = player.transform.position + new Vector3 (0f, 1.75f, -1f);
+            Vector3 desiredPos = player.transform.position + new Vector3 (0f, 1.75f, -1f);
+            Vector3 smoothedPos = Vector3.Lerp (transform.position, desiredPos, smoothness * Time.deltaTime);
+            transform.position = smoothedPos;
             cam2OnAir = false;
         }
 
         if (Math.Abs(deltaX) > 3){
             Vector3 target = transform.position + new Vector3 (deltaX, 0f, 0f);
-            Vector3 newpos = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5);	
+            Vector3 newpos = Vector3.Lerp(transform.position, target, smoothness * Time.deltaTime);	
             transform.position = newpos;
 
         }
         if (Math.Abs(deltaY) > 2){
             Vector3 target = transform.position + new Vector3 (0f, deltaY+1.75f, 0f);
-            Vector3 newpos = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5);	
+            Vector3 newpos = Vector3.Lerp(transform.position, target, Time.deltaTime * smoothness * Time.deltaTime);	
             transform.position = newpos;
         }
-
         
         
         if(Input.GetKeyDown(KeyCode.V)){

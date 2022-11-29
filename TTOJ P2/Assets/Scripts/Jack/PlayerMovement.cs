@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     bool allowToMove = false;
 
+    public Transform wallOverlapCheck;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,24 +55,8 @@ public class PlayerMovement : MonoBehaviour
             SwingMovement();
         }
 
-        // Wall Code
-        if (Physics2D.OverlapCircle(wallCheck.position, 0.5f, ground)){
-            if(transform.localScale.x > 0){
-                if(Input.GetAxis("Horizontal") > 0){
-                    allowToMove = false;
-                } else {
-                    allowToMove = true;
-                }
-            } else if (transform.localScale.x < 0){
-                if(Input.GetAxis("Horizontal") < 0){
-                    allowToMove = false;
-                } else {
-                    allowToMove = true;
-                }
-            }
-
-        }
-
+        WallSlide();
+        
 }
 
 
@@ -79,6 +65,7 @@ public class PlayerMovement : MonoBehaviour
         if(collider.gameObject.tag == "Ground"){
             isGround = true;
             allowToMove = true;
+            anim.SetBool("WallSlide", false);
         }
     }
 
@@ -151,11 +138,28 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = charScale;
     }
 
-
-
-
-
-
+    
+    void WallSlide(){
+        if (Physics2D.OverlapCircle(wallCheck.position, 0.3f, ground)){
+            if(transform.localScale.x > 0){
+                if(Input.GetAxis("Horizontal") > 0){
+                    anim.SetBool("WallSlide", true);
+                    allowToMove = false;
+                } else {
+                    anim.SetBool("WallSlide", false);
+                    allowToMove = true;
+                }
+            } else if (transform.localScale.x < 0){
+                if(Input.GetAxis("Horizontal") < 0){
+                    anim.SetBool("WallSlide", true);
+                    allowToMove = false;
+                } else {
+                    anim.SetBool("WallSlide", false);
+                    allowToMove = true;
+                }
+            }
+        }
+    }
 
 }
 
