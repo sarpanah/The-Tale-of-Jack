@@ -8,9 +8,15 @@ public class PlayerHealth : MonoBehaviour
 
     Animator anim;
 
+    GameObject player;
+
+    Vector3 startPoint;
+
     void Start()
     {
         anim = GetComponent<Animator>();
+        player = GameObject.Find("Player");
+        startPoint = transform.position;
     }
 
     void Update()
@@ -31,6 +37,9 @@ public class PlayerHealth : MonoBehaviour
 
 
     void Die(){
-        Destroy(gameObject);
+       // Destroy(gameObject);
+
+        transform.position = startPoint;
+        health = 100;
     }
 }

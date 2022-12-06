@@ -59,7 +59,7 @@ public class PlayerCombat : MonoBehaviour
     void RunCastAttack(){
         if(Time.time > nextAttack){
                 anim.SetTrigger ("Cast");
-                PlayerMovement.moving = false;
+                PlayerMovement.movingState = 0;
                 rb.velocity = new Vector3 (0f, 0f, 0f);
                 nextAttack = Time.time + 3 / 2;
                 stopCounter = Time.time;
@@ -73,7 +73,7 @@ public class PlayerCombat : MonoBehaviour
     }
 
     public void UnlockMoving(){
-        PlayerMovement.moving = true;
+        PlayerMovement.movingState = 1;
 
     }
 

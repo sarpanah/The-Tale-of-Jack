@@ -45,13 +45,15 @@ public class FollowCamera : MonoBehaviour
         }
         if (Math.Abs(deltaY) > 2){
             Vector3 target = transform.position + new Vector3 (0f, deltaY+1.75f, 0f);
-            Vector3 newpos = Vector3.Lerp(transform.position, target, Time.deltaTime * smoothness * Time.deltaTime);	
+            Vector3 newpos = Vector3.Lerp(transform.position, target, smoothness * Time.deltaTime);	
             transform.position = newpos;
         }
         
         
         if(Input.GetKeyDown(KeyCode.V)){
 
+            secCamera.transform.position = transform.position;
+                        
             secCamera.SetActive(true);
             gameObject.SetActive(false);
             

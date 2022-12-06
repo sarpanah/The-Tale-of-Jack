@@ -22,9 +22,8 @@ public class PlatfromSwing : MonoBehaviour
 
 
     void OnTriggerEnter2D(Collider2D collider){
-        if(collider.gameObject.name == "Player" && PlayerMovement.movingInSwing == false){
-            PlayerMovement.moving = false;
-            PlayerMovement.movingInSwing = true;
+        if(collider.gameObject.name == "Player" && PlayerMovement.movingState == 1){
+            PlayerMovement.movingState = 2;
             player.transform.position = transform.position;
         }
 

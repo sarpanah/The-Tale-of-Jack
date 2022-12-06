@@ -21,6 +21,8 @@ public class FollowCamera2 : MonoBehaviour
         transform.position = player.transform.position + new Vector3 (0f, 1.75f, -1f);
 
         if(Input.GetKeyDown(KeyCode.V)){
+            firCamera.transform.position = transform.position;
+
             FollowCamera.cam2OnAir = true;
             gameObject.SetActive(false);
             firCamera.SetActive(true);

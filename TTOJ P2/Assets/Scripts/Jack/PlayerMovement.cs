@@ -2,21 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class PlayerMovement : MonoBehaviour
 {
+
 
     Rigidbody2D rb;
     Vector3 velocity = Vector3.zero;
     Animator anim;
+    HingeJoint2D hj;
 
     bool isGround;
     bool doubleJumpAv;
 
     public GameObject mile;
     public static float horizontalMove = 0;
-    public static bool moving = true;
-    public static bool movingInSwing = false;
+    public static int movingState = 1; // 0: Stop, 1: moving, 2: swinging, 3: falling
     public Transform wallCheck;
+    BoxCollider2D player_box_collider;
+
 
     public LayerMask ground;
 
@@ -26,17 +31,28 @@ public class PlayerMovement : MonoBehaviour
 
     public Transform wallOverlapCheck;
 
+    public Vector2 box_collider_wall_size;
+
+    public float baseAngularSpeed;
+    public float rotationSpeed;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        hj = GetComponent<HingeJoint2D>();
         anim = GetComponent<Animator>();
+        player_box_collider = GetComponent<BoxCollider2D>();
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(1-transform.rotation.z);
+
         
         if(Input.GetKeyDown(KeyCode.Space) && isGround){
             Jump();
@@ -46,12 +62,12 @@ public class PlayerMovement : MonoBehaviour
             DoubleJump();
         }
         
-        if(moving){
+        if(movingState == 1){
             Movement();
         }
         
 
-        if(movingInSwing){
+        if(movingState == 2){
             SwingMovement();
         }
 
@@ -66,6 +82,14 @@ public class PlayerMovement : MonoBehaviour
             isGround = true;
             allowToMove = true;
             anim.SetBool("WallSlide", false);
+
+            // Falling State
+            
+            if(movingState == 3){
+                movingState = 1;
+                transform.rotation =  Quaternion.identity;
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
         }
     }
 
@@ -75,6 +99,8 @@ public class PlayerMovement : MonoBehaviour
             isGround = false;
         }
     }
+
+    
 
 
 
@@ -119,16 +145,40 @@ public class PlayerMovement : MonoBehaviour
     
 
     public void SwingMovement(){
-        rb.velocity = new Vector3(0f, 0f, 0f);
-        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        rb.angularVelocity = baseAngularSpeed + rotationSpeed * (1-Mathf.Abs(transform.rotation.z));
+        hj.enabled = true;
+        rb.constraints = RigidbodyConstraints2D.None;
         anim.SetBool("Grab", true);
-        float turn = Input.GetAxis("Horizontal");
-        Vector3 d = new Vector3(0f, 0f, 1f);
-        Vector3 playerPosition = transform.position;
-        transform.RotateAround(playerPosition, d * turn, 60 * Time.deltaTime);
+        
+        if (Input.GetKey("down")){
+            mile.GetComponent<CircleCollider2D>().enabled = false;
+            hj.enabled = false;
+
+            anim.SetBool("Grab", false);
+            movingState = 3;
+            
+            StartCoroutine("EnableMileCollider", 2f);
+        }
+        // rb.velocity = new Vector3(0f, 0f, 0f);
+        // rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        // anim.SetBool("Grab", true);
+        // float turn = Input.GetAxis("Horizontal");
+        // Vector3 d = new Vector3(0f, 0f, 1f);
+        // Vector3 playerPosition = transform.position;
+
+
+        // if(Input.GetAxis("Horizontal") != 0){
+        //     transform.RotateAround(playerPosition, d * turn, 0.1f + baseAngularSpeed * (1-Mathf.Abs(transform.rotation.z)));
+
+        // } else if (Input.GetAxis("Horizontal") == 0){
+        //     transform.RotateAround(playerPosition, d * 1, baseAngularSpeed * -transform.rotation.z * Mathf.Acos(transform.rotation.z));
+        // }
 
     }
 
+    void EnableMileCollider(){
+        mile.GetComponent<CircleCollider2D>().enabled = true;
+    }
 
     
     // Flip Character
@@ -140,10 +190,12 @@ public class PlayerMovement : MonoBehaviour
 
     
     void WallSlide(){
-        if (Physics2D.OverlapCircle(wallCheck.position, 0.3f, ground)){
+        if (Physics2D.OverlapBox(wallCheck.position, box_collider_wall_size, 0, ground)){
             if(transform.localScale.x > 0){
                 if(Input.GetAxis("Horizontal") > 0){
-                    anim.SetBool("WallSlide", true);
+                    if (rb.velocity.y <= 0){
+                        anim.SetBool("WallSlide", true);
+                    }
                     allowToMove = false;
                 } else {
                     anim.SetBool("WallSlide", false);
@@ -151,13 +203,18 @@ public class PlayerMovement : MonoBehaviour
                 }
             } else if (transform.localScale.x < 0){
                 if(Input.GetAxis("Horizontal") < 0){
-                    anim.SetBool("WallSlide", true);
-                    allowToMove = false;
+                    if (rb.velocity.y <= 0){
+                        anim.SetBool("WallSlide", true);
+                    }
+                allowToMove = false;
                 } else {
                     anim.SetBool("WallSlide", false);
                     allowToMove = true;
                 }
             }
+        } else {
+            anim.SetBool("WallSlide", false);
+            allowToMove = true;
         }
     }
 
