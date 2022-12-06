@@ -814,6 +814,7 @@ MonoBehaviour:
   box_collider_wall_size: {x: 0.01, y: 1}
   baseAngularSpeed: 100
   rotationSpeed: 300
+  remainingTime: 3
 --- !u!114 &382107759
 MonoBehaviour:
   m_ObjectHideFlags: 0

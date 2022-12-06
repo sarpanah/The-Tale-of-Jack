@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject mile;
     public static float horizontalMove = 0;
-    public static int movingState = 1; // 0: Stop, 1: moving, 2: swinging, 3: falling
+    public static int movingState = 1; // 0: Stop, 1: moving, 2: swinging, 3: falling 4: ground sliding
     public Transform wallCheck;
     BoxCollider2D player_box_collider;
 
@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public float baseAngularSpeed;
     public float rotationSpeed;
 
+    public float remainingTimeForGroundSlide = 1f;
 
 
     // Start is called before the first frame update
@@ -51,9 +52,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(1-transform.rotation.z);
 
-        
         if(Input.GetKeyDown(KeyCode.Space) && isGround){
             Jump();
         }
@@ -71,8 +70,10 @@ public class PlayerMovement : MonoBehaviour
             SwingMovement();
         }
 
+
         WallSlide();
-        
+
+        GroundSlide();
 }
 
 
@@ -140,6 +141,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+      
         
     }
     
@@ -218,5 +220,30 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-}
+    void GroundSlide(){
+        
+        if(Mathf.Abs(rb.velocity.x) > 5 && Input.GetKeyDown(KeyCode.C))
+        {
+            movingState = 4;
+        }
 
+        if (movingState == 4){
+            anim.SetBool("GroundSlide", true);
+            if(transform.localScale.x > 0){
+                rb.velocity = new Vector3 (5f, 0f, 0f);
+            } else {
+                rb.velocity = new Vector3 (-5f, 0f, 0f);
+            }
+            
+            remainingTimeForGroundSlide -= Time.deltaTime;
+                if(remainingTimeForGroundSlide <= 0){
+                    movingState = 1;
+                    anim.SetBool("GroundSlide", false);
+                    remainingTimeForGroundSlide = 1;
+                }
+            
+        }
+
+        
+    }
+}
