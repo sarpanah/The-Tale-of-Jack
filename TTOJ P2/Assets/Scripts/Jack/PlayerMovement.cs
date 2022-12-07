@@ -74,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
         WallSlide();
 
         GroundSlide();
+
+        Falling();
 }
 
 
@@ -90,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
                 movingState = 1;
                 transform.rotation =  Quaternion.identity;
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+                anim.SetBool("Falling", false);
             }
         }
     }
@@ -147,20 +150,56 @@ public class PlayerMovement : MonoBehaviour
     
 
     public void SwingMovement(){
-        rb.angularVelocity = baseAngularSpeed + rotationSpeed * (1-Mathf.Abs(transform.rotation.z));
+        bool rotatingAntiClockWise = true;
+
+        // ROTATION IN CLOCK SHAPE (WHAT?)
+        if(rotatingAntiClockWise){
+            rb.angularVelocity = baseAngularSpeed + rotationSpeed * (1-Mathf.Abs(transform.rotation.z));
+        } else if(rotatingAntiClockWise == false) {
+            rb.angularVelocity = baseAngularSpeed + rotationSpeed * (1-Mathf.Abs(transform.rotation.z) * -1);
+        }
+        
         hj.enabled = true;
         rb.constraints = RigidbodyConstraints2D.None;
         anim.SetBool("Grab", true);
-        
+
+        // WHERE PLAYER LOOKS
+        if(Input.GetAxis("Horizontal") < 0 && lookingRight){
+           Flip();
+           lookingRight = false;
+           rotatingAntiClockWise = true;
+        } else if (Input.GetAxis("Horizontal") > 0 && lookingRight == false){
+            Flip();
+            lookingRight = true;
+            rotatingAntiClockWise = false;
+        }
+
+        // PLAYER INTERACTION WITH MILE
         if (Input.GetKey("down")){
             mile.GetComponent<CircleCollider2D>().enabled = false;
             hj.enabled = false;
-
             anim.SetBool("Grab", false);
             movingState = 3;
-            
+            StartCoroutine("EnableMileCollider", 2f);
+
+        } else if (Input.GetAxis("Horizontal") > 0 && Input.GetAxis("Vertical") > 0){
+            rb.velocity = new Vector3 (5f, 5f, 0f);
+            mile.GetComponent<CircleCollider2D>().enabled = false;
+            hj.enabled = false;
+            anim.SetBool("Grab", false);
+            movingState = 3;
+            StartCoroutine("EnableMileCollider", 2f);
+
+        } else if(Input.GetAxis("Horizontal") < 0 && Input.GetAxis("Vertical") > 0){
+            rb.velocity = new Vector3 (-5f, 5f, 0f);
+            mile.GetComponent<CircleCollider2D>().enabled = false;
+            hj.enabled = false;
+            anim.SetBool("Grab", false);
+            movingState = 3;
             StartCoroutine("EnableMileCollider", 2f);
         }
+
+        
         // rb.velocity = new Vector3(0f, 0f, 0f);
         // rb.constraints = RigidbodyConstraints2D.FreezePositionY;
         // anim.SetBool("Grab", true);
@@ -246,4 +285,17 @@ public class PlayerMovement : MonoBehaviour
 
         
     }
+
+
+    void Falling(){
+        if (isGround == false && rb.velocity.y < -1){
+            movingState = 3;
+        }
+
+        if(movingState == 3){
+            anim.SetBool("Falling", true);
+        }
+    }
+
+
 }
