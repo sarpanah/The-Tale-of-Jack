@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
             isGround = true;
             allowToMove = true;
             anim.SetBool("WallSlide", false);
+            anim.SetBool("Jump", false);
 
             // Falling State
             
@@ -113,6 +114,7 @@ public class PlayerMovement : MonoBehaviour
         if(isGround){
             rb.velocity = new Vector2(rb.velocity.x, 8f);
             doubleJumpAv = true;
+            anim.SetBool("Jump", true);
         }
     }
 
@@ -121,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
          if(isGround == false){
             rb.velocity = new Vector2(rb.velocity.x, 6f);
             doubleJumpAv = false;
+            anim.SetBool("Jump", true);
         }
     }
 
@@ -187,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
             mile.GetComponent<CircleCollider2D>().enabled = false;
             hj.enabled = false;
             anim.SetBool("Grab", false);
+            anim.SetBool("Smrslt", true);
             movingState = 3;
             StartCoroutine("EnableMileCollider", 2f);
 
@@ -195,6 +199,7 @@ public class PlayerMovement : MonoBehaviour
             mile.GetComponent<CircleCollider2D>().enabled = false;
             hj.enabled = false;
             anim.SetBool("Grab", false);
+            anim.SetBool("Smrslt", true);
             movingState = 3;
             StartCoroutine("EnableMileCollider", 2f);
         }
