@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine;  
 
 public class PlatfromSwing : MonoBehaviour
 {
@@ -26,7 +26,7 @@ public class PlatfromSwing : MonoBehaviour
             PlayerMovement.movingState = 2;
             player.transform.position = transform.position;
         }
-
+//|| PlayerMovement.movingState == 3
     }
 
 }

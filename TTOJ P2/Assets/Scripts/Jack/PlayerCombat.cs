@@ -35,7 +35,7 @@ public class PlayerCombat : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.F)) {
+        if (Input.GetKeyDown(KeyCode.F) && PlayerMovement.isGround == true) {
            RunCastAttack();
         }
 

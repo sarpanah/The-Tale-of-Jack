@@ -11,9 +11,9 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
     Vector3 velocity = Vector3.zero;
     Animator anim;
-    HingeJoint2D hj;
+    HingeJoint2D hingeJoint;
 
-    bool isGround;
+    public static bool isGround;
     bool doubleJumpAv;
 
     public GameObject mile;
@@ -43,11 +43,10 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        hj = GetComponent<HingeJoint2D>();
+        hingeJoint = GetComponent<HingeJoint2D>();
         anim = GetComponent<Animator>();
         player_box_collider = GetComponent<BoxCollider2D>();
     }
-
 
     // Update is called once per frame
     void Update()
@@ -162,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
             rb.angularVelocity = baseAngularSpeed + rotationSpeed * (1-Mathf.Abs(transform.rotation.z) * -1);
         }
         
-        hj.enabled = true;
+        hingeJoint.enabled = true;
         rb.constraints = RigidbodyConstraints2D.None;
         anim.SetBool("Grab", true);
 
@@ -180,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
         // PLAYER INTERACTION WITH MILE
         if (Input.GetKey("down")){
             mile.GetComponent<CircleCollider2D>().enabled = false;
-            hj.enabled = false;
+            hingeJoint.enabled = false;
             anim.SetBool("Grab", false);
             movingState = 3;
             StartCoroutine("EnableMileCollider", 2f);
@@ -188,7 +187,7 @@ public class PlayerMovement : MonoBehaviour
         } else if (Input.GetAxis("Horizontal") > 0 && Input.GetAxis("Vertical") > 0){
             rb.velocity = new Vector3 (5f, 5f, 0f);
             mile.GetComponent<CircleCollider2D>().enabled = false;
-            hj.enabled = false;
+            hingeJoint.enabled = false;
             anim.SetBool("Grab", false);
             anim.SetBool("Smrslt", true);
             movingState = 3;
@@ -197,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
         } else if(Input.GetAxis("Horizontal") < 0 && Input.GetAxis("Vertical") > 0){
             rb.velocity = new Vector3 (-5f, 5f, 0f);
             mile.GetComponent<CircleCollider2D>().enabled = false;
-            hj.enabled = false;
+            hingeJoint.enabled = false;
             anim.SetBool("Grab", false);
             anim.SetBool("Smrslt", true);
             movingState = 3;
