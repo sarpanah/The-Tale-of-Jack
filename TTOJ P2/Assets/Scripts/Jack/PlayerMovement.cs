@@ -122,6 +122,7 @@ public class PlayerMovement : MonoBehaviour
          if(isGround == false){
             rb.velocity = new Vector2(rb.velocity.x, 6f);
             doubleJumpAv = false;
+            anim.SetBool("Falling", false);
             anim.SetBool("Jump", true);
         }
     }
@@ -292,6 +293,8 @@ public class PlayerMovement : MonoBehaviour
 
 
     void Falling(){
+
+        Movement();
         if (isGround == false && rb.velocity.y < -1){
             movingState = 3;
         }
