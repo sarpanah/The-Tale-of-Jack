@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+
+    public Slider slider;
     float health = 100;
 
     Animator anim;
@@ -17,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
         anim = GetComponent<Animator>();
         player = GameObject.Find("Player");
         startPoint = transform.position;
+        slider.value = health;
     }
 
     void Update()
@@ -29,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
 
         health -= damage;
         anim.SetTrigger("Hurt");
+        slider.value = health;
 
         if(health <= 0){
             Die();

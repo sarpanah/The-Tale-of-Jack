@@ -277,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
 
     void GroundSlide(){
         
-        if(Mathf.Abs(rb.velocity.x) > 5 && Input.GetKeyDown(KeyCode.C))
+        if(Mathf.Abs(rb.velocity.x) > 5 && Input.GetKeyDown(KeyCode.C) && isGround)
         {
             movingState = 4;
         }
@@ -285,10 +285,10 @@ public class PlayerMovement : MonoBehaviour
         if (movingState == 4){
             anim.SetBool("GroundSlide", true);
             if(transform.localScale.x > 0){
-                rb.velocity = new Vector3 (5f, 0f, 0f);
+                rb.velocity = new Vector3 (6f, 0f, 0f);
                 allowToMove = false;
             } else {
-                rb.velocity = new Vector3 (-5f, 0f, 0f);
+                rb.velocity = new Vector3 (-6f, 0f, 0f);
                 allowToMove = false;
             }
             
