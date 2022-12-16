@@ -885,14 +885,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96004e84871ceb94b854ddb0e0d121bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mile: {fileID: 240543124}
+  box_collider_wall_size: {x: 0.01, y: 1}
   wallCheck: {fileID: 51749342}
   ground:
     serializedVersion: 2
     m_Bits: 256
   wallOverlapCheck: {fileID: 0}
   groundCheck: {fileID: 1626813336}
-  box_collider_wall_size: {x: 0.01, y: 1}
+  healthBarSlider: {fileID: 1219839967}
   baseAngularSpeed: 100
   rotationSpeed: 300
   remainingTimeForGroundSlide: 1
@@ -1971,7 +1971,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.02, y: 0.23749758}
+  m_AnchoredPosition: {x: 0.02, y: 0.247}
   m_SizeDelta: {x: 1.4157, y: 0.5788}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1219839967
@@ -3223,6 +3223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea42125b70824df47830b54e13045446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBarSlider: {fileID: 1171187568}
   moveSpeed: 2
   chaseSpeed: 2
   chaseDistX: 4

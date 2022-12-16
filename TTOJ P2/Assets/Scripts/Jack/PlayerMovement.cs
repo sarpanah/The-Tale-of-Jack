@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,33 +11,28 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity = Vector3.zero;
     Animator anim;
     HingeJoint2D hingeJoint;
-
-    public static bool isGround;
-    bool doubleJumpAv;
-
-    public GameObject mile;
-    public static float horizontalMove = 0;
-    public static int movingState = 1; // 0: Stop, 1: moving, 2: swinging, 3: falling 4: ground sliding
-    public Transform wallCheck;
+    GameObject mile;
     BoxCollider2D player_box_collider;
-
-
+    public Vector2 box_collider_wall_size;
+    public Transform wallCheck;
     public LayerMask ground;
-
-    bool lookingRight = true;
-
-    bool allowToMove = false;
-
     public Transform wallOverlapCheck;
     public Transform groundCheck;
+    public Slider healthBarSlider;
 
-    public Vector2 box_collider_wall_size;
 
+    public static int movingState = 1; // 0: Stop, 1: moving, 2: swinging, 3: falling 4: ground sliding
+    public static float horizontalMove = 0;
+    public static bool isGround;
     public float baseAngularSpeed;
     public float rotationSpeed;
-
     public float remainingTimeForGroundSlide = 1f;
 
+    bool doubleJumpAv;
+    bool lookingRight = true;
+    bool allowToMove = false;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         hingeJoint = GetComponent<HingeJoint2D>();
         anim = GetComponent<Animator>();
         player_box_collider = GetComponent<BoxCollider2D>();
+        mile = GameObject.Find("Circle");
     }
 
     // Update is called once per frame
@@ -80,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
 
         Falling();
 
-        Debug.Log(isGround);
+        Debug.Log(movingState);
 }
 
     void GroundCheck(){
@@ -238,8 +233,11 @@ public class PlayerMovement : MonoBehaviour
     // Flip Character
     void Flip(){
         Vector3 charScale = transform.localScale;
+        Vector3 slidePos = healthBarSlider.transform.localScale;
         charScale.x *= -1;
+        slidePos.x *= -1;
         transform.localScale = charScale;
+        healthBarSlider.transform.localScale = slidePos;
     }
 
     
@@ -300,7 +298,16 @@ public class PlayerMovement : MonoBehaviour
                     allowToMove = true;
                 }
             
+            if (isGround == false){
+            Debug.Log("SHod");
+            rb.velocity = new Vector3 (0f, 0f, 0f);
+            movingState = 3;
+            anim.SetBool("GroundSlide", false);
+            remainingTimeForGroundSlide = 1;
+            allowToMove = true;
         }
+
+        } 
 
         
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyMovement : MonoBehaviour
 {   
@@ -11,6 +12,7 @@ public class EnemyMovement : MonoBehaviour
     Animator anim;
     Vector3 leftPoint;
     Vector3 rightPoint;
+    public Slider healthBarSlider;
     
     bool movingLeft = true;
     bool enemyIdleMode = true;
@@ -121,13 +123,21 @@ public class EnemyMovement : MonoBehaviour
     void Flip(){
         if(transform.position.x - player.transform.position.x < 0 && transform.localScale.x < 0){
             Vector3 enemyScale = transform.localScale;
+            Vector3 slidePos = healthBarSlider.transform.localScale;
             enemyScale.x *= -1;
+            slidePos.x *= -1;
             transform.localScale = enemyScale;
+            healthBarSlider.transform.localScale = slidePos;
+
          } else if (transform.position.x - player.transform.position.x > 0 && transform.localScale.x > 0) {
             Vector3 enemyScale = transform.localScale;
+            Vector3 slidePos = healthBarSlider.transform.localScale;
             enemyScale.x *= -1;
+            slidePos.x *= -1;
             transform.localScale = enemyScale;
+            healthBarSlider.transform.localScale = slidePos;
         }
+
     }
 
 }
