@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     bool allowToMove = false;
 
     public Transform wallOverlapCheck;
+    public Transform groundCheck;
 
     public Vector2 box_collider_wall_size;
 
@@ -52,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
+        GroundCheck();
+
         if(Input.GetKeyDown(KeyCode.Space) && isGround){
             Jump();
         }
@@ -70,17 +73,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
+
         WallSlide();
 
         GroundSlide();
 
         Falling();
+
+        Debug.Log(isGround);
 }
 
-
-    void OnCollisionEnter2D(Collision2D collider){
-        
-        if(collider.gameObject.tag == "Ground"){
+    void GroundCheck(){
+        if(Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground)){
             isGround = true;
             allowToMove = true;
             anim.SetBool("WallSlide", false);
@@ -95,6 +99,10 @@ public class PlayerMovement : MonoBehaviour
                 anim.SetBool("Falling", false);
             }
         }
+    }
+    void OnCollisionEnter2D(Collision2D collider){
+        
+        
     }
 
     void OnCollisionExit2D(Collision2D collider){
@@ -239,20 +247,23 @@ public class PlayerMovement : MonoBehaviour
         if (Physics2D.OverlapBox(wallCheck.position, box_collider_wall_size, 0, ground)){
             if(transform.localScale.x > 0){
                 if(Input.GetAxis("Horizontal") > 0){
-                    if (rb.velocity.y <= 0){
+                    if(isGround == false){
                         anim.SetBool("WallSlide", true);
                     }
-                    allowToMove = false;
+                        allowToMove = false;
+                    
                 } else {
                     anim.SetBool("WallSlide", false);
-                    allowToMove = true;
+                    allowToMove = false;
                 }
             } else if (transform.localScale.x < 0){
                 if(Input.GetAxis("Horizontal") < 0){
-                    if (rb.velocity.y <= 0){
+                    
+                        if(isGround == false){
                         anim.SetBool("WallSlide", true);
                     }
-                allowToMove = false;
+                        allowToMove = false;
+                    
                 } else {
                     anim.SetBool("WallSlide", false);
                     allowToMove = true;
@@ -275,8 +286,10 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool("GroundSlide", true);
             if(transform.localScale.x > 0){
                 rb.velocity = new Vector3 (5f, 0f, 0f);
+                allowToMove = false;
             } else {
                 rb.velocity = new Vector3 (-5f, 0f, 0f);
+                allowToMove = false;
             }
             
             remainingTimeForGroundSlide -= Time.deltaTime;
@@ -284,6 +297,7 @@ public class PlayerMovement : MonoBehaviour
                     movingState = 1;
                     anim.SetBool("GroundSlide", false);
                     remainingTimeForGroundSlide = 1;
+                    allowToMove = true;
                 }
             
         }
@@ -295,7 +309,7 @@ public class PlayerMovement : MonoBehaviour
     void Falling(){
 
         Movement();
-        if (isGround == false && rb.velocity.y < -1){
+        if (isGround == false && rb.velocity.y < -0){
             movingState = 3;
         }
 
