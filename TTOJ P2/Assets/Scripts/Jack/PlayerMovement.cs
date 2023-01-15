@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
 
 
     Rigidbody2D rb;
-    Vector3 velocity = Vector3.zero;
     Animator anim;
     HingeJoint2D hingeJoint;
     GameObject mile;
@@ -16,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 box_collider_wall_size;
     public Transform wallCheck;
     public LayerMask ground;
-    public Transform wallOverlapCheck;
     public Transform groundCheck;
     public Slider healthBarSlider;
 

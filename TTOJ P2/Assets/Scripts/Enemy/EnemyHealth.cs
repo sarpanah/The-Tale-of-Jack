@@ -7,25 +7,17 @@ public class EnemyHealth : MonoBehaviour
 {
 
     public Slider slider;
+    Animator anim;
+    public GameObject lootBag;
 
 
     float health = 100;
-
-    Animator anim;
-
-    public GameObject lootBag;
 
     void Start()
     {
         anim = GetComponent<Animator>();
         slider.value = health;
     }
-
-    void Update()
-    {
-        Debug.Log(health);
-    }
-
 
     public void DecreaseHealth(float damage){
 

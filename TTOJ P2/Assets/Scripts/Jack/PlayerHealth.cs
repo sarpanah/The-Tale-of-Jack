@@ -7,13 +7,12 @@ public class PlayerHealth : MonoBehaviour
 {
 
     public Slider slider;
+    Animator anim;
+    GameObject player;
+    Vector3 startPoint;
     float health = 100;
 
-    Animator anim;
-
-    GameObject player;
-
-    Vector3 startPoint;
+    
 
     void Start()
     {
@@ -22,12 +21,6 @@ public class PlayerHealth : MonoBehaviour
         startPoint = transform.position;
         slider.value = health;
     }
-
-    void Update()
-    {
-       
-    }
-
 
     public void DecreaseHealth(float damage){
 
@@ -42,9 +35,8 @@ public class PlayerHealth : MonoBehaviour
 
 
     void Die(){
-       // Destroy(gameObject);
-
         transform.position = startPoint;
         health = 100;
+        slider.value = health;
     }
 }
