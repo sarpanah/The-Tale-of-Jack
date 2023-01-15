@@ -409,7 +409,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      10: -720999893
+      tileset2_27: -425178976
       3: 1285032201
       8: -1981696068
       tileset2_16: -1331096145
@@ -448,7 +448,7 @@ TextureImporter:
       tileset2_28: 2062744835
       tileset2_32: -247785274
       tileset2_38: 1250464580
-      tileset2_27: -425178976
+      10: -720999893
       tileset2_11: -518329202
       15: -1592047014
   spritePackingTag: 
