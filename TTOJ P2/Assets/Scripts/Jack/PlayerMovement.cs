@@ -56,11 +56,6 @@ public class PlayerMovement : MonoBehaviour
             DoubleJump();
         }
         
-        if(movingState == 1){
-            Movement();
-        }
-        
-
         if(movingState == 2){
             SwingMovement();
         }
@@ -75,6 +70,12 @@ public class PlayerMovement : MonoBehaviour
 
         Debug.Log(movingState);
 }
+
+    void FixedUpdate(){
+        if(movingState == 1){
+            Movement();
+        }
+    }
 
     void GroundCheck(){
         if(Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground)){
